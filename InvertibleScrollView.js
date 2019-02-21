@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  TouchableOpacity,
 } from 'react-native';
 import ScrollableMixin from 'react-native-scrollable-mixin';
 
@@ -65,7 +66,11 @@ let InvertibleScrollView = createReactClass({
       this.props.onLayoutMessageView(nativeEvent.layout, key);
     }
   },
-
+  onBackgroundPressed() {
+    if (this.props.onChatBackgroundPressed) {
+      this.props.onChatBackgroundPressed();
+    }
+  },
   _renderInvertedChildren(children, inversionStyle) {
     return React.Children.map(children, child => {
       return child ?
@@ -73,7 +78,9 @@ let InvertibleScrollView = createReactClass({
           onLayout={event => this.onLayoutMessageView(event, child.key)}
           style={inversionStyle}
         >
-          {child}
+          <TouchableOpacity activeOpacity={1} onPress={() => this.onBackgroundPressed()}>
+            {child}
+          </TouchableOpacity>
         </View>
         : child;
     });
